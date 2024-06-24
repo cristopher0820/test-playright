@@ -1,0 +1,17 @@
+@ -1,48 +0,0 @@
+pipeline {
+    stages{
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Installing all Dependencies') {
+            steps {
+                echo '**********************'
+                echo '** Building Project **'
+                echo '**********************'
+            }
+
+    }
+}

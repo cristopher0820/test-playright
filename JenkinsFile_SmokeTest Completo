@@ -1,0 +1,49 @@
+@ -1,48 +0,0 @@
+pipeline {
+    agent {
+        label 'Deployment-Nova-test4'
+    }
+    environment {
+        CREDENTIALS_JS = credentials('production-nova-cred')
+    }
+    stages{
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Installing all Dependencies') {
+            steps {
+                echo '**********************'
+                echo '** Building Project **'
+                echo '**********************'
+                bat 'echo %CREDENTIALS_JS% > ./data_driven/prod.json'
+                echo 'npx npm-check-updates -u'
+                echo 'yarn install'
+                bat 'npm install'
+                echo 'npm install --legacy-peer-deps'
+            }
+        }
+        stage('Clean Allure report') {
+            steps {
+                echo '**************************'
+                echo '** Delete Report folder **'
+                echo '**************************'
+                bat 'rmdir /q/s allure-results'
+            }
+        }
+        stage('P&S Redesing Scenarios') {
+            steps {
+                echo '*************************'
+                echo '**    Testing Apps     **'
+                echo '*************************'
+                bat 'npx wdio run ./wdio.conf.js --suite smokeTestPROD'
+            }
+        }
+    }
+    post { 
+        always { 
+            allure results: [[path: 'allure-results']]
+        }
+    }
+}
