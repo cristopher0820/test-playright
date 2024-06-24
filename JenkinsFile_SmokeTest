@@ -1,15 +1,20 @@
 pipeline {
-    stages{
-        stage('Checkout') {
+    agent any
+
+    stages {
+        stage('Build') {
             steps {
-                checkout scm
+                echo 'Building..'
             }
         }
-        stage('Installing all Dependencies') {
+        stage('Test') {
             steps {
-                echo '**********************'
-                echo '** Building Project **'
-                echo '**********************'
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
             }
         }
     }
