@@ -11,6 +11,6 @@ pipeline {
                 echo '** Building Project **'
                 echo '**********************'
             }
-
+        }
     }
 }
